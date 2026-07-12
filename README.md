@@ -2,6 +2,8 @@
 
 Entrada de contest: **reimaginar a home oficial da Blizzard** (blizzard.com/pt-br), não cloná-la.
 
+**🔗 Ao vivo:** [henriquecrosio.github.io/Contest-Frontend-Blizzard](https://henriquecrosio.github.io/Contest-Frontend-Blizzard/)
+
 ## 💡 O conceito
 
 > A home de uma produtora de mundos deve ser um portal entre universos, não uma vitrine de cards.
