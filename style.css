@@ -1,693 +1,663 @@
-/* Reset básico e box-sizing */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Impedir overflow horizontal */
-  html, body {
-    width: 100%;
-    overflow-x: hidden;
-  }
-  
+/* ==========================================================================
+   Contest Frontend — Blizzard reimaginada
+   Conceito: a página é uma sala de cinema; a arte dos jogos é a fonte de luz.
+   Uma família (Archivo variável): display condensada black × corpo normal.
+   ========================================================================== */
 
 :root {
-    --primary-color: #00aeff;
-    --secondary-color: #0088cc;
-    --navbar-bg: rgba(56, 60, 84, 0.95);
-    --font-main: 'Poppins', sans-serif;
-    --font-secondary: 'Archivo', sans-serif;
-    --bg-gradient: linear-gradient(135deg, #273d59, #314a6d);
-  }
-  
-  /* RESET BÁSICO */
-  * {
+    /* Cor — cinema escuro com tinta azul da marca; um único acento */
+    --bg: oklch(15% 0.014 252);
+    --bg-deep: oklch(11% 0.012 252);
+    --surface: oklch(20% 0.018 252);
+    --ink: oklch(96% 0.004 252);
+    --ink-muted: oklch(79% 0.014 252);
+    --accent: oklch(76% 0.135 232);
+    --accent-hover: oklch(82% 0.12 232);
+    --accent-ink: oklch(17% 0.045 245);
+    --line: oklch(100% 0 0 / 0.14);
+
+    /* Tipo */
+    --font: "Archivo", system-ui, sans-serif;
+    --display-w: "wdth" 68;
+    --text-w: "wdth" 100;
+
+    /* Ritmo */
+    --gutter: clamp(1.25rem, 4vw, 4rem);
+    --section-gap: clamp(4.5rem, 10vw, 9rem);
+
+    /* Camadas */
+    --z-rail: 10;
+    --z-topbar: 100;
+    --z-menu: 200;
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --slide-dur: 9s;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: var(--font-main);
-    background: var(--bg-gradient);
-    background-attachment: fixed;
-    color: #fff;
-    min-height: 100vh;
-  }
-  
-  /* Cabeçalhos */
-  h1, h2, h3 {
-    font-family: var(--font-secondary);
-  }
-  
-  /* NAVBAR */
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background: var(--navbar-bg);
-    backdrop-filter: blur(10px);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-variation-settings: var(--text-w);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+img, video { display: block; max-width: 100%; }
+
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; max-width: 65ch; }
+
+a { color: inherit; }
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+.skip-link {
     position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(95% - 60px);
-    max-width: 1600px;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-  }
-  
-  .navbar-left {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo img {
-    height: 36px;
-    margin-right: 30px;
-  }
-  
-  .game-list {
-    display: flex;
-    list-style: none;
-  }
-  
-  .game-list li {
-    margin-right: 20px;
-  }
-  
-  .game-list a {
-    color: #fff;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: var(--z-menu);
+    padding: 0.6rem 1rem;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 700;
     text-decoration: none;
-    font-size: 18px;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  
-  .game-list a:hover {
-    color: var(--primary-color);
-  }
-  
-  .navbar-right {
-    display: flex;
+    border-radius: 4px;
+    translate: 0 -400%;
+    transition: translate 0.3s var(--ease-out);
+}
+.skip-link:focus { translate: 0 0; }
+
+/* --------------------------------------------------------------------------
+   Botões
+   -------------------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
     align-items: center;
-  }
-  
-  /* ÍCONE DO MENU (hambúrguer) - SOMENTE MOBILE */
-  .menu-icon {
-    display: none; /* oculto em telas grandes */
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.75rem;
+    font: 700 0.95rem/1 var(--font);
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    border-radius: 3px;
+    border: 1px solid transparent;
     cursor: pointer;
-    font-size: 24px;
-    margin-right: 20px;
-    color: #fff;
-  }
-  
-  /* LINKS DA DIREITA */
-  .nav-links {
+    transition: background-color 0.25s var(--ease-out), border-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+}
+.btn-primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+}
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost {
+    border-color: var(--line);
+    color: var(--ink);
+}
+.btn-ghost:hover { border-color: var(--ink-muted); }
+.btn-small { padding: 0.55rem 1.1rem; font-size: 0.85rem; }
+
+/* --------------------------------------------------------------------------
+   Topbar
+   -------------------------------------------------------------------------- */
+.topbar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: var(--z-topbar);
     display: flex;
-    list-style: none;
-  }
-  
-  .nav-links li {
-    margin-right: 20px;
-  }
-  
-  .nav-links a {
-    color: #fff;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding: 0.9rem var(--gutter);
+    transition: background-color 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+}
+.topbar.is-scrolled {
+    background: oklch(13% 0.013 252 / 0.88);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 var(--line);
+}
+.brand img { width: 96px; height: auto; }
+
+.topbar-nav {
+    display: flex;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    margin-right: auto;
+}
+.topbar-nav a {
     text-decoration: none;
-    font-size: 18px;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-links a:hover {
-    color: var(--primary-color);
-  }
-  
-  .account-icon {
-    font-size: 18px;
-  }
-  
-  .download-button {
-    background-color: var(--primary-color);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 14px;
     font-weight: 600;
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .download-button:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* HERO CAROUSEL */
-  .hero-carousel {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    margin-top: 100px; /* Para não ficar embaixo da navbar fixa */
-  }
-  
-  .carousel-container {
+    font-size: 0.92rem;
+    color: var(--ink-muted);
+    transition: color 0.2s var(--ease-out);
+}
+.topbar-nav a:hover { color: var(--ink); }
+
+.topbar-actions {
     display: flex;
-    height: 100%;
-    transition: transform 0.5s ease;
-  }
-  
-  .carousel-slide {
-    flex: 0 0 90%;
-    height: 100%;
-    margin: 0 5%;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+}
+.account {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: var(--ink-muted);
+    transition: color 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
+}
+.account:hover { color: var(--ink); background: var(--line); }
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: 0;
+    color: var(--ink);
+    padding: 0.4rem;
+    cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   Seletor de universos (hero)
+   -------------------------------------------------------------------------- */
+.universe {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    isolation: isolate;
     overflow: hidden;
-  }
-  
-  .hero-image {
+}
+
+.universe-media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(120% 90% at 75% 20%, oklch(24% 0.03 252) 0%, transparent 60%),
+        var(--bg-deep);
+}
+.universe-layer {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  
-  .hero-content {
+    opacity: 0;
+    transition: opacity 0.9s var(--ease-out);
+}
+.universe-layer.is-active { opacity: 1; }
+.universe-scrim {
     position: absolute;
-    left: 8%;
-    top: 20%;
-    max-width: 600px;
-  }
-  
-  .hero-logo {
-    max-width: 350px;
-    margin-bottom: 20px;
-  }
-  
-  .hero-title {
-    font-size: 3em;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  /* Botão do Carrossel */
-  .hero-button {
-    background-color: var(--primary-color);
-    color: #fff;
-    padding: 18px 36px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .hero-button:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Setas do Carrossel */
-  .carousel-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 24px;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    inset: 0;
+    /* vinheta de cinema: garante legibilidade do chrome sobre qualquer vídeo */
+    background:
+        linear-gradient(to bottom, oklch(11% 0.012 252 / 0.6) 0%, transparent 22%),
+        linear-gradient(to left, oklch(11% 0.012 252 / 0.6) 0%, transparent 34%),
+        linear-gradient(75deg, oklch(11% 0.012 252 / 0.92) 0%, oklch(11% 0.012 252 / 0.45) 45%, transparent 75%),
+        linear-gradient(to top, oklch(11% 0.012 252 / 0.95) 0%, transparent 45%);
+}
+
+.universe-content {
+    padding: 0 var(--gutter) clamp(3rem, 8vh, 6rem);
+    max-width: 60rem;
+}
+
+.universe-count {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    margin-bottom: clamp(1rem, 3vh, 2.5rem);
+}
+.universe-count i {
+    font-style: normal;
+    margin: 0 0.35em;
+    opacity: 0.5;
+}
+
+.universe-franchise {
+    font-weight: 600;
+    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+}
+
+.universe-title {
+    font-variation-settings: var(--display-w);
+    font-weight: 850;
+    font-size: clamp(3rem, 9vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    text-transform: uppercase;
+    margin: 0 0 1.25rem;
+}
+.universe-title .word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+}
+.universe-title .word > span {
+    display: inline-block;
+    animation: word-rise 0.7s var(--ease-out) both;
+}
+@keyframes word-rise {
+    from { translate: 0 110%; }
+    to { translate: 0 0; }
+}
+
+.universe-meta {
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
-  }
-  
-  .carousel-arrow:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-  
-  .carousel-arrow.prev {
-    left: 20px;
-  }
-  .carousel-arrow.next {
-    right: 20px;
-  }
-  
-  /* Indicadores do Carrossel */
-  .carousel-nav {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .carousel-indicators {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .indicator {
-    width: 12px;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  .indicator.active {
-    background-color: #fff;
-  }
-  
-  /* SEÇÃO JOGOS EM DESTAQUE */
-  .featured-games {
-    padding: 50px 5%;
-    max-width: 1600px;
-    margin: 0 auto;
-  }
-  
-  .section-header {
-    display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    margin-bottom: 2rem;
+}
+.universe-platforms {
+    display: inline-flex;
     align-items: center;
-    margin-bottom: 30px;
-  }
-  
-  .section-header h2 {
-    font-size: 2.5em;
-  }
-  
-  .filter-buttons {
+    gap: 0.8rem;
+}
+.universe-platforms img {
+    height: 18px;
+    width: auto;
+    opacity: 0.85;
+}
+
+.universe-actions {
     display: flex;
-    gap: 10px;
-  }
-  
-  .filter-btn {
-    background: transparent;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-  }
-  
-  .filter-btn.active,
-  .filter-btn:hover {
-    background-color: var(--primary-color);
-    color: #fff;
-    transform: translateY(-2px);
-  }
-  
-  .game-cards {
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+.universe-hint {
+    position: absolute;
+    left: var(--gutter);
+    top: clamp(5.5rem, 12vh, 8rem);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    opacity: 0.7;
+}
+
+/* Trilho de universos */
+.universe-rail {
+    position: absolute;
+    right: var(--gutter);
+    bottom: clamp(3rem, 8vh, 6rem);
+    z-index: var(--z-rail);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 15rem;
+}
+.rail-item {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-  
-  .game-card {
-    background: rgba(255, 255, 255, 0.1);
+    grid-template-columns: 2.2rem 1fr;
+    align-items: baseline;
+    gap: 0 0.6rem;
+    padding: 0.5rem 0.65rem;
+    background: none;
+    border: 0;
+    border-radius: 4px;
+    color: var(--ink-muted);
+    font: 600 0.9rem/1.2 var(--font);
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.25s var(--ease-out), background-color 0.25s var(--ease-out);
+}
+.rail-item:hover { color: var(--ink); background: oklch(100% 0 0 / 0.06); }
+.rail-num {
+    font-size: 0.72rem;
+    font-weight: 700;
+    opacity: 0.6;
+}
+.rail-item.is-active { color: var(--ink); }
+.rail-item.is-active .rail-num { color: var(--accent); opacity: 1; }
+.rail-progress {
+    grid-column: 1 / -1;
+    display: block;
+    height: 2px;
+    margin-top: 0.4rem;
+    background: var(--line);
+    border-radius: 1px;
+    overflow: hidden;
+    opacity: 0;
+}
+.rail-item.is-active .rail-progress { opacity: 1; }
+.rail-progress::after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+}
+.rail-item.is-active.is-counting .rail-progress::after {
+    animation: rail-count var(--slide-dur) linear both;
+}
+@keyframes rail-count {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+/* --------------------------------------------------------------------------
+   A estante (biblioteca de pôsteres)
+   -------------------------------------------------------------------------- */
+.library {
+    padding: var(--section-gap) 0 0;
+}
+.library-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    padding: 0 var(--gutter);
+    margin-bottom: 0.75rem;
+}
+.library h2,
+.battlenet h2 {
+    font-variation-settings: var(--display-w);
+    font-weight: 850;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+}
+.library-note {
+    padding: 0 var(--gutter);
+    color: var(--ink-muted);
+    font-size: 0.92rem;
+    margin-bottom: 2.25rem;
+}
+
+.chips { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.chip {
+    padding: 0.5rem 1.05rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: none;
+    color: var(--ink-muted);
+    font: 600 0.85rem/1 var(--font);
+    cursor: pointer;
+    transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
+}
+.chip:hover { color: var(--ink); border-color: var(--ink-muted); }
+.chip.is-active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg-deep);
+}
+
+.poster-row {
+    display: flex;
+    gap: clamp(0.9rem, 2vw, 1.5rem);
+    overflow-x: auto;
+    padding: 0.5rem var(--gutter) 1.5rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface) transparent;
+}
+.poster {
+    flex: 0 0 auto;
+    width: clamp(11rem, 18vw, 15rem);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    scroll-snap-align: start;
+}
+.poster img {
+    aspect-ratio: 9 / 16;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+    transition: translate 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+    box-shadow: 0 10px 30px oklch(0% 0 0 / 0.35);
+}
+.poster:hover img,
+.poster:focus-visible img {
+    translate: 0 -8px;
+    box-shadow: 0 22px 45px oklch(0% 0 0 / 0.5);
+}
+.poster.is-hidden { display: none; }
+.poster-caption {
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.8rem 0.15rem 0;
+}
+.poster-caption strong { font-size: 0.98rem; font-weight: 700; }
+.poster-caption em {
+    font-style: normal;
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Battle.net
+   -------------------------------------------------------------------------- */
+.battlenet { padding: var(--section-gap) var(--gutter) 0; }
+.battlenet-panel {
+    position: relative;
     border-radius: 10px;
     overflow: hidden;
-    transition: transform 0.3s ease;
-  }
-  
-  .game-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .card-media {
-    position: relative;
-    padding-top: 56.25%; /* 16:9 */
-    overflow: hidden;
-  }
-  
-  .card-media img,
-  .card-media video {
+    min-height: 26rem;
+    display: flex;
+    align-items: center;
+    background: var(--bg-deep);
+}
+.battlenet-shot {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  
-  .card-media video {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .game-card:hover .card-media video {
-    opacity: 1;
-  }
-  
-  .game-card h3 {
-    font-size: 1.2em;
-    margin: 15px;
-  }
-  
-  .game-card p {
-    font-size: 0.9em;
-    margin: 0 15px 15px;
-    color: #ccc;
-  }
-  
-  .game-platforms {
-    display: flex;
-    gap: 10px;
-    margin: 0 15px 15px;
-  }
-  
-  .game-platforms img {
-    width: 24px;
-    height: 24px;
-  }
-  
-  /* SEÇÃO DOWNLOAD */
-  .download-battlenet {
-    padding: 50px 5%;
-    max-width: 1600px;
-    margin: 0 auto;
-    background: linear-gradient(135deg, #2e3845, #232933);
-  }
-  
-  .download-card {
+    /* o PNG original tem texto embutido à esquerda; mostramos só o app à direita */
+    object-position: 100% center;
+    scale: 1.5;
+    transform-origin: right center;
+}
+.battlenet-copy {
     position: relative;
-    max-width: 1000px;
-    margin: 0 auto;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  }
-  
-  .download-image {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  
-  .download-buttons {
-    position: absolute;
-    bottom: 30px;
-    left: 85px;
+    padding: clamp(2.5rem, 5vw, 4.5rem);
+    max-width: 34rem;
+    background: linear-gradient(90deg, oklch(11% 0.012 252 / 0.98) 50%, oklch(11% 0.012 252 / 0.7) 80%, transparent);
+    align-self: stretch;
     display: flex;
-    gap: 15px;
-  }
-  
-  .download-btn,
-  .learn-more-btn {
-    padding: 12px 24px;
-    font-size: 1em;
-    font-weight: 600;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .download-btn {
-    background-color: var(--primary-color);
-    color: #fff;
-  }
-  
-  .download-btn:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  .learn-more-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-  }
-  
-  .learn-more-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* RODAPÉ */
-  .site-footer {
-    padding: 40px 5% 20px;
-  }
-  
-  .footer-nav {
-    display: flex;
+    flex-direction: column;
     justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-  
-  .footer-nav a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 14px;
-  }
-  
-  .footer-nav a:hover {
-    text-decoration: underline;
-  }
-  
-  .footer-divider {
-    border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin: 20px 0;
-  }
-  
-  .footer-content {
+    gap: 1.25rem;
+}
+.battlenet-copy p { color: var(--ink-muted); }
+.battlenet-actions {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    gap: 1.25rem;
     flex-wrap: wrap;
-  }
-  
-  .footer-logo {
-    flex-shrink: 0;
-    margin-right: 40px;
-  }
-  
-  .footer-logo img {
-    height: 200px;
-  }
-  
-  .footer-rights {
-    flex: 0.8;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
-    line-height: 1.4;
-    max-width: calc(100% - 300px);
-  }
-  
-  .footer-social {
-    flex-shrink: 0;
-    display: flex;
-    gap: 10px;
-    margin-left: auto;
-  }
-  
-/* ========================
-   RESPONSIVIDADE - MOBILE FIRST
-   ======================== */
+}
+.battlenet-os { font-size: 0.85rem; color: var(--ink-muted); }
 
-/* Até 768px (smartphones) */
-@media (max-width: 768px) {
-    /* Navbar */
-    .navbar {
-      flex-wrap: wrap;
-      top: 0;
-      left: 0;
-      transform: none;
-      width: 100% !important; /* Força 100% de largura no mobile */
-      border-radius: 0;
-      justify-content: space-between;
+/* --------------------------------------------------------------------------
+   BlizzCon
+   -------------------------------------------------------------------------- */
+.blizzcon {
+    position: relative;
+    margin-top: var(--section-gap);
+    min-height: 24rem;
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+    overflow: hidden;
+    text-align: center;
+}
+.blizzcon-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.blizzcon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: oklch(11% 0.012 252 / 0.72);
+}
+.blizzcon-inner {
+    display: grid;
+    justify-items: center;
+    gap: 1.25rem;
+    padding: 4rem var(--gutter);
+}
+.blizzcon-logo { width: clamp(11rem, 22vw, 16rem); height: auto; }
+.blizzcon-inner p {
+    font-weight: 600;
+    font-size: 1.05rem;
+    max-width: 34ch;
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+    margin-top: var(--section-gap);
+    padding: 3rem var(--gutter) 3.5rem;
+    border-top: 1px solid var(--line);
+    background: var(--bg-deep);
+}
+.footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--line);
+}
+.footer-nav a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    transition: color 0.2s var(--ease-out);
+}
+.footer-nav a:hover { color: var(--ink); }
+
+.footer-body {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2.5rem;
+    align-items: start;
+}
+.footer-logo { width: 110px; height: auto; }
+.footer-legal {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--ink-muted);
+    max-width: 70ch;
+}
+.footer-social { display: flex; gap: 0.5rem; }
+.footer-social a {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: var(--ink-muted);
+    transition: color 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
+}
+.footer-social a:hover { color: var(--ink); background: var(--line); }
+
+/* --------------------------------------------------------------------------
+   Revelações no scroll (só com JS; sem JS tudo fica visível)
+   -------------------------------------------------------------------------- */
+.js .reveal {
+    opacity: 0;
+    translate: 0 24px;
+    transition: opacity 0.7s var(--ease-out), translate 0.7s var(--ease-out);
+}
+.js .reveal.in { opacity: 1; translate: 0 0; }
+
+/* --------------------------------------------------------------------------
+   Responsivo
+   -------------------------------------------------------------------------- */
+@media (max-width: 64rem) {
+    .universe-content { padding-bottom: 9.5rem; }
+    .universe-rail {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        flex-direction: row;
+        min-width: 0;
+        overflow-x: auto;
+        padding: 0.75rem var(--gutter) 1rem;
+        background: linear-gradient(to top, oklch(11% 0.012 252 / 0.9), transparent);
+        scrollbar-width: none;
     }
-  
-    /* Esconde a lista de jogos e os links por padrão para não ultrapassar a tela */
-    .game-list,
-    .nav-links {
-      display: none !important;
+    .rail-item { flex: 0 0 auto; grid-template-columns: auto; }
+    .rail-num { display: none; }
+    .universe-hint { display: none; }
+}
+
+@media (max-width: 48rem) {
+    .topbar-nav {
+        position: fixed;
+        inset: 0 0 auto 0;
+        z-index: var(--z-menu);
+        flex-direction: column;
+        gap: 0;
+        padding: 5.5rem var(--gutter) 2rem;
+        background: oklch(13% 0.013 252 / 0.97);
+        backdrop-filter: blur(18px);
+        translate: 0 -105%;
+        transition: translate 0.45s var(--ease-out);
     }
-  
-    /* Ícone do menu hamburguer aparece e vai para a extrema direita */
-    .menu-icon {
-      display: block;
-      cursor: pointer;
-      font-size: 24px;
-      color: #fff;
-      margin-left: auto;    /* Joga para a direita */
-      margin-right: 20px;   /* Espaço entre o ícone e a borda direita */
+    .topbar-nav.is-open { translate: 0 0; }
+    .topbar-nav a {
+        padding: 1rem 0;
+        font-size: 1.3rem;
+        border-bottom: 1px solid var(--line);
     }
-  
-    /* Exibe os links quando a classe "show" é adicionada via JS */
-    .nav-links.show {
-      display: flex !important;
-      flex-direction: column;
-      width: 100%;
-      background: var(--navbar-bg);
-      padding: 10px 0;
-      border-radius: 0 0 4px 4px;
-      position: relative;
-    }
-  
-    .nav-links li {
-      margin: 10px 0;
-      text-align: center;
-    }
-  
-    /* Oculta o botão "Baixe o Battle.net" no mobile */
-    .download-button {
-      display: none !important;
-    }
-  
-    /* Hero Carousel */
-    .hero-carousel {
-      margin-top: 60px; /* Evitar sobreposição com navbar fixa */
-      height: auto;
-    }
-    .carousel-slide {
-      flex: 0 0 100%;
-      margin: 0 !important; /* Remove margens que possam causar overflow */
-      border-radius: 0;
-    }
-    .hero-content {
-      position: static;
-      max-width: 100%;
-      text-align: center;
-      padding: 20px;
-    }
-    .hero-logo {
-      max-width: 200px;
-      margin: 0 auto 20px;
-    }
-    .hero-title {
-      font-size: 1.5em;
-      margin-bottom: 15px;
-    }
-    .hero-button {
-      padding: 10px 20px;
-      font-size: 1em;
-      margin: 10px auto;
-      display: block;
-    }
-    .carousel-arrow {
-      display: none;
-    }
-  
-    /* Cards */
-    .featured-games {
-      padding: 20px !important; /* Reduz o padding para não somar com larguras */
-    }
-    .game-cards {
-      /* Exibir em 1 coluna no mobile, evitando perda de formatação */
-      grid-template-columns: 1fr;
-      padding: 15px;
-    }
-  
-    /* >>> OCULTA OS BOTÕES DE FILTRO NO MOBILE <<< */
-    .filter-buttons {
-      display: none !important;
-    }
-  
-    /* Download Battle.net */
-    .download-card {
-      position: relative;
-      max-width: 1000px;
-      margin: 20px auto;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-      background: #1e1e1e; /* Fundo escuro para os botões */
-      text-align: center;
-      padding: 40px 20px;
-    }
-    .download-image-wrapper {
-      margin-bottom: 20px;
-    }
-    .download-image {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    .download-buttons {
-      display: flex;
-      flex-direction: column; /* Empilha os botões no mobile */
-      gap: 10px;
-      align-items: center;
-      justify-content: center;
-    }
-  
-    /* Rodapé */
-    .footer-content {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    .footer-logo {
-      margin-right: 0;
-      margin-bottom: 20px;
-    }
-    .footer-rights {
-      max-width: 90%;
-      margin-bottom: 20px;
-    }
-    .footer-social {
-      margin-left: 0;
-      margin-bottom: 20px;
-    }
-  }
-  
-  /* Entre 769px e 1200px (tablets e telas médias) */
-  @media (min-width: 769px) and (max-width: 1200px) {
-    /* Em telas intermediárias, exibir 3 colunas */
-    .game-cards {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .carousel-slide {
-      flex: 0 0 96%;
-      margin: 0 2%;
-    }
-    .hero-title {
-      font-size: 2em;
-    }
-  }
-  
-  /* Entre 1201px e 1600px */
-  @media (min-width: 1201px) and (max-width: 1600px) {
-    /* Em telas maiores, mas ainda não gigantes, exibir 4 colunas */
-    .game-cards {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  
-  /* Acima de 1601px (desktops muito grandes) */
-  @media (min-width: 1601px) {
-    .game-cards {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  
-  /* Ajuste adicional para telas menores que 900px (opcional):
-     Se quiser 2 colunas abaixo de 900px, retire o comentário.
-     Se preferir manter 1 coluna no mobile, deixe comentado. */
-  /*
-  @media (max-width: 900px) {
-    .game-cards {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  */
-  
-  
-  
+    .menu-toggle { display: block; position: relative; z-index: calc(var(--z-menu) + 1); }
+    .topbar-actions .btn { display: none; }
+
+    .battlenet-copy { max-width: none; background: linear-gradient(to top, oklch(11% 0.012 252 / 0.94) 60%, transparent); }
+    .battlenet-panel { align-items: flex-end; min-height: 30rem; }
+
+    .footer-body { grid-template-columns: 1fr; gap: 1.75rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Movimento reduzido
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .universe-layer { transition: none; }
+    .universe-title .word > span { animation: none; }
+    .rail-item.is-active.is-counting .rail-progress::after { animation: none; transform: scaleX(1); }
+    .js .reveal { opacity: 1; translate: 0 0; transition: none; }
+    .poster img { transition: none; }
+    .topbar-nav { transition: none; }
+}
